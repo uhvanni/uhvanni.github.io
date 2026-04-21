@@ -94,13 +94,15 @@
         animation: fadeIn 1.5s ease-out;
       }
 
-      h1 {
-        font-size: clamp(3rem, 12vw, 7rem);
-        font-weight: 900;
-        letter-spacing: -0.05em;
-        margin-top: 2rem;
-        text-transform: lowercase;
-      }
+      .logo {
+		max-width: clamp(200px, 40vw, 400px);
+		width: 100%;
+		height: auto;
+		margin-top: 2rem;
+		image-rendering: pixelated; /* keeps pixel art crisp */
+		user-select: none;
+		-webkit-user-drag: none;
+	  }
 
       .tagline {
         font-size: 0.9rem;
