@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
-    <meta name="description" content="ne.ko — coming soon!" />
+    <meta name="description" content="ne.ko — coming soon" />
     <title>ne.ko</title>
   </head>
   <body>
@@ -33,13 +33,12 @@
           <div class="tail"></div>
         </div>
       </div>
-
-      <img src="/logo.png" alt="ne.ko" class="logo" />
-      <p class="tagline">coming soon<span class="cursor">_</span></p>
     </main>
 
     <footer>
-      <span>© 2026 uhvanni</span>
+      <a href="mailto:contact@ne-ko.io" class="email-link">contact@ne-ko.io</a>
+	  <span class="divider">·</span>
+	  <span>© 2026 uhvanni</span>
     </footer>
 
     <style>
@@ -73,6 +72,24 @@
         min-height: 100vh;
         position: relative;
       }
+
+	  .email-link {
+		color: var(--fg);
+		text-decoration: none;
+		border-bottom: 1px solid var(--dim);
+		padding-bottom: 2px;
+		transition: all 0.2s ease;
+	  }
+
+	  .email-link:hover {
+		color: var(--fg);
+		border-bottom-color: var(--fg);
+	  }
+
+	  .divider {
+		margin: 0 0.75rem;
+		color: var(--dim);
+	  }
 
       /* Subtle scanline effect */
       .scanlines {
@@ -119,7 +136,7 @@
       .cat-container {
         display: flex;
         justify-content: center;
-        margin-bottom: 1rem;
+        margin-bottom: 0rem;
       }
 
       .cat {
