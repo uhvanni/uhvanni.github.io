@@ -1,17 +1,261 @@
 ---
-
+// src/pages/index.astro
 ---
 
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content="ne.ko — coming soon" />
+    <title>ne.ko</title>
+  </head>
+  <body>
+    <div class="scanlines"></div>
+
+    <main>
+      <div class="cat-container">
+        <div class="cat">
+          <!-- Ears -->
+          <div class="ear ear-left"></div>
+          <div class="ear ear-right"></div>
+          <!-- Head -->
+          <div class="head">
+            <div class="eye eye-left"></div>
+            <div class="eye eye-right"></div>
+            <div class="nose"></div>
+            <div class="mouth"></div>
+          </div>
+          <!-- Body -->
+          <div class="body"></div>
+          <!-- Tail -->
+          <div class="tail"></div>
+        </div>
+      </div>
+
+      <img src="/logo.png" alt="ne.ko" class="logo" />
+      <p class="tagline">coming soon<span class="cursor">_</span></p>
+    </main>
+
+    <footer>
+      <span>© 2026 uhvanni</span>
+    </footer>
+
+    <style>
+      :root {
+        --bg: #0a0a0a;
+        --fg: #f5f5f5;
+        --dim: #888;
+        --pixel: 6px;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html, body {
+        height: 100%;
+        background: var(--bg);
+        color: var(--fg);
+        font-family: 'Courier New', 'Consolas', monospace;
+        overflow: hidden;
+        image-rendering: pixelated;
+      }
+
+      body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        position: relative;
+      }
+
+      /* Subtle scanline effect */
+      .scanlines {
+        position: fixed;
+        inset: 0;
+        background: repeating-linear-gradient(
+          0deg,
+          rgba(255, 255, 255, 0.02) 0px,
+          rgba(255, 255, 255, 0.02) 1px,
+          transparent 1px,
+          transparent 3px
+        );
+        pointer-events: none;
+        z-index: 100;
+      }
+
+      main {
+        text-align: center;
+        animation: fadeIn 1.5s ease-out;
+      }
+
+      h1 {
+        font-size: clamp(3rem, 12vw, 7rem);
+        font-weight: 900;
+        letter-spacing: -0.05em;
+        margin-top: 2rem;
+        text-transform: lowercase;
+      }
+
+      .tagline {
+        font-size: 0.9rem;
+        letter-spacing: 0.4em;
+        text-transform: uppercase;
+        color: var(--dim);
+        margin-top: 0.5rem;
+      }
+
+      .cursor {
+        animation: blink 1s step-end infinite;
+      }
+
+      /* Pixel cat — built with divs */
+      .cat-container {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 1rem;
+      }
+
+      .cat {
+        position: relative;
+        width: calc(var(--pixel) * 12);
+        height: calc(var(--pixel) * 14);
+        animation: float 3s ease-in-out infinite;
+      }
+
+      /* Ears (triangles made with borders) */
+      .ear {
+        position: absolute;
+        top: 0;
+        width: 0;
+        height: 0;
+        border-left: calc(var(--pixel) * 1.5) solid transparent;
+        border-right: calc(var(--pixel) * 1.5) solid transparent;
+        border-bottom: calc(var(--pixel) * 2) solid var(--fg);
+      }
+      .ear-left { left: calc(var(--pixel) * 1); }
+      .ear-right { right: calc(var(--pixel) * 1); }
+
+      /* Head */
+      .head {
+        position: absolute;
+        top: calc(var(--pixel) * 1.5);
+        left: 0;
+        width: 100%;
+        height: calc(var(--pixel) * 6);
+        background: var(--fg);
+        border-radius: 4px;
+      }
+
+      /* Eyes */
+      .eye {
+        position: absolute;
+        top: calc(var(--pixel) * 2);
+        width: var(--pixel);
+        height: var(--pixel);
+        background: var(--bg);
+        animation: blink-eyes 4s infinite;
+      }
+      .eye-left { left: calc(var(--pixel) * 2.5); }
+      .eye-right { right: calc(var(--pixel) * 2.5); }
+
+      /* Nose */
+      .nose {
+        position: absolute;
+        top: calc(var(--pixel) * 3.5);
+        left: 50%;
+        transform: translateX(-50%);
+        width: var(--pixel);
+        height: calc(var(--pixel) * 0.5);
+        background: var(--bg);
+      }
+
+      /* Mouth */
+      .mouth {
+        position: absolute;
+        top: calc(var(--pixel) * 4.5);
+        left: 50%;
+        transform: translateX(-50%);
+        width: calc(var(--pixel) * 1.5);
+        height: calc(var(--pixel) * 0.5);
+        background: var(--bg);
+      }
+
+      /* Body */
+      .body {
+        position: absolute;
+        top: calc(var(--pixel) * 7);
+        left: calc(var(--pixel) * 1);
+        width: calc(var(--pixel) * 10);
+        height: calc(var(--pixel) * 6);
+        background: var(--fg);
+        border-radius: 4px;
+      }
+
+      /* Tail */
+      .tail {
+        position: absolute;
+        top: calc(var(--pixel) * 8);
+        right: calc(var(--pixel) * -2);
+        width: calc(var(--pixel) * 3);
+        height: calc(var(--pixel) * 1);
+        background: var(--fg);
+        transform-origin: left center;
+        animation: tail-wag 2s ease-in-out infinite;
+      }
+
+      footer {
+        position: fixed;
+        bottom: 1.5rem;
+        left: 0;
+        right: 0;
+        text-align: center;
+        font-size: 0.75rem;
+        color: var(--dim);
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+      }
+
+      /* Animations */
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      @keyframes blink {
+        50% { opacity: 0; }
+      }
+
+      @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-8px); }
+      }
+
+      @keyframes blink-eyes {
+        0%, 45%, 50%, 100% { height: var(--pixel); }
+        47% { height: calc(var(--pixel) * 0.2); }
+      }
+
+      @keyframes tail-wag {
+        0%, 100% { transform: rotate(0deg); }
+        50% { transform: rotate(20deg); }
+      }
+
+      /* Responsive — make cat a bit smaller on mobile */
+      @media (max-width: 600px) {
+        :root {
+          --pixel: 5px;
+        }
+        .tagline {
+          letter-spacing: 0.3em;
+          font-size: 0.75rem;
+        }
+      }
+    </style>
+  </body>
 </html>
