@@ -1,0 +1,236 @@
+---
+// src/components/cat.astro
+---
+
+<div class="cat-container">
+    <div class="dialog" id="dialog"></div>
+    <button class="cat" id="cat" aria-label="pet the cat">
+        <!-- Ears -->
+        <div class="ear ear-left"></div>
+        <div class="ear ear-right"></div>
+        <!-- Head -->
+        <div class="head">
+            <div class="eye eye-left"></div>
+            <div class="eye eye-right"></div>
+            <div class="nose"></div>
+            <div class="mouth" id="mouth"></div>
+        </div>
+        <!-- Body -->
+        <div class="body"></div>
+        <!-- Tail -->
+        <div class="tail"></div>
+    </button>
+</div>
+
+<script>
+    const cat = document.getElementById('cat') as HTMLButtonElement;
+    const dialog = document.getElementById('dialog') as HTMLDivElement;
+    const mouth = document.getElementById('mouth') as HTMLDivElement;
+
+    const messages: string[] = [
+        'mrrrp..',
+        'meow!',
+        'erm.. meow. or something.'
+    ]
+
+    let hideTimeout: ReturnType<typeof setTimeout>;
+    let typeInterval: ReturnType<typeof setInterval>;
+
+    let lastMessage = '';
+
+    cat.addEventListener('focusin', () => {
+        
+    })
+    cat.addEventListener('click', () => {
+        let msg;
+        do {
+            msg = messages[Math.floor(Math.random() * messages.length)]
+        } while (msg === lastMessage && messages.length > 1);
+        lastMessage = msg;
+
+        clearInterval(typeInterval);
+        clearTimeout(hideTimeout);
+
+        dialog.innerHTML = msg
+            .split('')
+            .map((ch) => `<span class="char">${ch === ' ' ? '&nbsp;' : ch}</span>`)
+            .join('');
+
+        dialog.classList.add('visible');
+        mouth.classList.add('moving');
+
+        const chars = dialog.querySelectorAll<HTMLSpanElement>('.char');
+        
+        let i = 0;
+        typeInterval = setInterval(() => {
+            if (i < chars.length) {
+                chars[i].classList.add('shown');
+                i++;
+            } else {
+                mouth.classList.remove('moving');
+                clearInterval(typeInterval);
+                hideTimeout = setTimeout(() => dialog.classList.remove('visible'), 2000);
+            }
+        }, 25);
+    })
+</script>
+
+<style is:global>
+    .cat-container {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        margin-bottom: 0rem;
+    }
+
+    .cat {
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        position: relative;
+        width: calc(var(--pixel) * 12);
+        height: calc(var(--pixel) * 14);
+        animation: float 3s ease-in-out infinite;
+        transition: transform 0.1s ease;
+    }
+
+    .ear {
+        position: absolute;
+        top: 0;
+        width: 0;
+        height: 0;
+        border-left: calc(var(--pixel) * 1.5) solid transparent;
+        border-right: calc(var(--pixel) * 1.5) solid transparent;
+        border-bottom: calc(var(--pixel) * 2) solid var(--fg);
+    }
+    .ear-left { left: calc(var(--pixel) * 1); }
+    .ear-right { right: calc(var(--pixel) * 1); }
+
+    .head {
+        position: absolute;
+        top: calc(var(--pixel) * 1.5);
+        left: 0;
+        width: 100%;
+        height: calc(var(--pixel) * 6);
+        background: var(--fg);
+        border-radius: 4px;
+    }
+
+    .eye {
+        position: absolute;
+        top: calc(var(--pixel) * 2);
+        width: var(--pixel);
+        height: var(--pixel);
+        background: var(--bg);
+        animation: blink-eyes 4s infinite;
+    }
+    .eye-left { left: calc(var(--pixel) * 2.5); }
+    .eye-right { right: calc(var(--pixel) * 2.5); }
+
+    .nose {
+        position: absolute;
+        top: calc(var(--pixel) * 3.5);
+        left: 50%;
+        transform: translateX(-50%);
+        width: var(--pixel);
+        height: calc(var(--pixel) * 0.5);
+        background: var(--bg);
+    }
+
+    .mouth {
+        position: absolute;
+        top: calc(var(--pixel) * 5);
+        left: 50%;
+        transform: translateX(-50%);
+        width: calc(var(--pixel) * 1.5);
+        height: calc(var(--pixel) * 0.4);
+        background: var(--bg);
+    }
+    .mouth.moving {
+        animation: talking 0.2s infinite;
+    }
+
+    .body {
+        position: absolute;
+        top: calc(var(--pixel) * 7);
+        left: calc(var(--pixel) * 2.5);
+        width: calc(var(--pixel) * 7);
+        height: calc(var(--pixel) * 6);
+        background: var(--fg);
+        border-radius: 4px;
+    }
+
+    .dialog {
+        position: absolute;
+        bottom: calc(100% + 1rem);
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--bg);
+        color: var(--fg);
+        border: 1px solid var(--fg);
+        padding: 0.5rem 0.75rem;
+        font-size: 0.9rem;
+        white-space: nowrap;
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transition: opacity 0.2s ease, transform 0.2s ease, visibility 0s linear 0.2s;
+        font-family: 'Courier New', Courier, monospace;
+    }
+
+    .dialog::after {
+        content: '';
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        border: 5px solid transparent;
+        border-top-color: var(--bg);
+    }
+
+    .dialog::before {
+        content: '';
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        border: 7px solid transparent;
+        border-top-color: var(--fg);
+        z-index: -1;
+    }
+
+    .dialog.visible {
+        opacity: 1;
+        transform: translate(-50%, -0.25rem);
+        visibility: visible;
+        transition: opacity 0.2s ease, transform 0.2s ease, visibility 0s linear 0s;
+    }
+
+    .char {
+        opacity: 0;
+        display: inline-block;
+        transform: translateY(0.4em);
+        transition: opacity 0.15s ease, transform 0.15s ease;
+    }
+
+    .char.shown {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-8px); }
+    }
+
+    @keyframes blink-eyes {
+        0%, 45%, 50%, 100% { height: var(--pixel); transform: translateY(0); }
+        47% { height: calc(var(--pixel) * 0.2); transform: translateY(calc(var(--pixel) / 2)); }
+    }
+
+    @keyframes talking {
+        0%, 100% { height: calc(var(--pixel) * 0.4); }
+        50% { height: calc(var(--pixel) * 0.6) }
+    }
+</style>

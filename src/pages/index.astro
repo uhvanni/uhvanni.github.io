@@ -1,378 +1,141 @@
 ---
 // src/pages/index.astro
+import Cat from '../components/cat.astro'
 ---
 
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<meta name="description" content="ne.ko - coming soon" />
-		<title>ne.ko</title>
-	</head>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/svg+xml" href="https://avatar-cyan.vercel.app/api/pfp/658119375920037897/smallimage" />
+  <meta name="generator" content={Astro.generator} />
+  <meta name="description" content="ne.ko - coming soon" />
+  <title>ne.ko</title>
+</head>
 
-	<script>
-		const cat = document.getElementById('cat') as HTMLButtonElement;
-		const dialog = document.getElementById('dialog') as HTMLDivElement;
+<body>
+  <div class="scanlines"></div>
 
-		const messages: string[] = [
-			'mrrrp..',
-			'meow!',
-			'erm.. meow. or something.'
-		]
+  <main>
+    <Cat />
+  </main>
 
-		let hideTimeout: ReturnType<typeof setTimeout>;
-		let typeInterval: ReturnType<typeof setInterval>;
+  <footer>
+    <a href="mailto:contact@ne-ko.io" class="email-link">contact@ne-ko.io</a>
+    <span class="divider">·</span>
+    <span>© 2026 uhvanni</span>
+  </footer>
 
-		let lastMessage = '';
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --fg: #f5f5f5;
+      --dim: #888;
+      --pixel: 6px;
+    }
 
-		cat.addEventListener('click', () => {
-			let msg;
-			do {
-				msg = messages[Math.floor(Math.random() * messages.length)]
-			} while (msg === lastMessage && messages.length > 1);
-			lastMessage = msg;
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-			clearInterval(typeInterval);
-			clearTimeout(hideTimeout);
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: 'Courier New', Courier, monospace;
+      overflow: hidden;
+      image-rendering: auto;
+    }
 
-			dialog.innerHTML = msg
-				.split('')
-				.map((ch) => `<span class="char">${ch === ' ' ? '&nbsp;' : ch}</span>`)
-				.join('');
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      position: relative;
+      padding-bottom: 6rem;
+    }
 
-			dialog.classList.add('visible');
+    .email-link {
+      color: var(--fg);
+      text-decoration: none;
+      border-bottom: 1px solid var(--dim);
+      padding-bottom: 2px;
+      transition: all 0.2s ease;
+    }
 
-			const chars = dialog.querySelectorAll<HTMLSpanElement>('.char');
-			
-			let i = 0;
-			typeInterval = setInterval(() => {
-				if (i < chars.length) {
-					chars[i].classList.add('shown');
-					i++;
-				} else {
-					clearInterval(typeInterval);
-					hideTimeout = setTimeout(() => dialog.classList.remove('visible'), 2000);
-				}
-			}, 25);
-		})
-	</script>
+    .email-link:hover {
+      color: var(--fg);
+      border-bottom-color: var(--fg);
+    }
 
-	<body>
-	<div class="scanlines"></div>
+    .divider {
+      margin: 0 0.75rem;
+      color: var(--dim);`
+    }
 
-	<main>
-		<div class="cat-container">
-			<div class="dialog" id="dialog"></div>
-			<button class="cat" id="cat" aria-label="pet the cat">
-				<!-- Ears -->
-				<div class="ear ear-left"></div>
-				<div class="ear ear-right"></div>
-				<!-- Head -->
-				<div class="head">
-					<div class="eye eye-left"></div>
-					<div class="eye eye-right"></div>
-					<div class="nose"></div>
-					<div class="mouth"></div>
-				</div>
-				<!-- Body -->
-				<div class="body"></div>
-				<!-- Tail -->
-				<div class="tail"></div>
-			</button>
-		</div>
-	</main>
+    /* Subtle scanline effect */
+    .scanlines {
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        rgba(255, 255, 255, 0.02) 0px,
+        rgba(255, 255, 255, 0.02) 2px,
+        transparent 1px,
+        transparent 5px
+      );
+      pointer-events: none;
+      z-index: 100;
+    }
 
-	<footer>
-		<a href="mailto:contact@ne-ko.io" class="email-link">contact@ne-ko.io</a>
-		<span class="divider">·</span>
-		<span>© 2026 uhvanni</span>
-	</footer>
+    main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      animation: fadeIn 0.5s ease-out;
+    }
 
-    <style>
+    footer {
+      padding: 1.5rem;
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--dim);
+      letter-spacing: 0.1em;
+    }
+
+    .tagline {
+      font-size: 1rem;
+      letter-spacing: 0.2em;
+      color: var(--dim);
+      margin-top: 2rem;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+
+    /* Responsive — make cat a bit smaller on mobile */
+    @media (max-width: 600px) {
       :root {
-        --bg: #0a0a0a;
-        --fg: #f5f5f5;
-        --dim: #888;
-        --pixel: 6px;
+        --pixel: 5px;
       }
-
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-
-      html, body {
-        height: 100%;
-        background: var(--bg);
-        color: var(--fg);
-        font-family: 'Comic Sans MS', 'Comic Sans', sans-serif;
-        overflow: hidden;
-        image-rendering: auto;
-      }
-
-      body {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        min-height: 100vh;
-        position: relative;
-      }
-
-	  .email-link {
-		color: var(--fg);
-		text-decoration: none;
-		border-bottom: 1px solid var(--dim);
-		padding-bottom: 2px;
-		transition: all 0.2s ease;
-	  }
-
-	  .email-link:hover {
-		color: var(--fg);
-		border-bottom-color: var(--fg);
-	  }
-
-	  .divider {
-		margin: 0 0.75rem;
-		color: var(--dim);
-	  }
-
-      /* Subtle scanline effect */
-      .scanlines {
-        position: fixed;
-        inset: 0;
-        background: repeating-linear-gradient(
-          0deg,
-          rgba(255, 255, 255, 0.02) 0px,
-          rgba(255, 255, 255, 0.02) 2px,
-          transparent 1px,
-          transparent 5px
-        );
-        pointer-events: none;
-        z-index: 100;
-      }
-
-      main {
-        text-align: center;
-        animation: fadeIn 0.5s ease-out;
-      }
-
-      .logo {
-		max-width: clamp(150px, 40vw, 350px);
-		width: 100%;
-		height: auto;
-		margin-top: 0rem;
-		image-rendering: auto;
-		user-select: none;
-		-webkit-user-drag: none;
-	  }
-
       .tagline {
-        font-size: 1rem;
-        letter-spacing: 0.2em;
-        color: var(--dim);
-        margin-top: 2rem;
-      }
-
-	  .dialog {
-		position: absolute;
-		bottom: calc(100% + 1rem);
-		left: 50%;
-		transform: translateX(-50%);
-		background: var(--bg);
-		color: var(--fg);
-		border: 1px solid var(--fg);
-		padding: 0.5rem 0.75rem;
-		font-size: 0.9rem;
-		white-space: nowrap;
-		opacity: 0;
-		visibility: hidden;
-		pointer-events: none;
-		transition: opacity 0.2s ease, transform 0.2s ease, visibility 0s linear 0.2s;
-		font-family: 'Comic Sans MS', sans-serif;
-	  }
-
-	  .dialog::after {
-		content: '';
-		position: absolute;
-		top: 100%;
-		left: 50%;
-		transform: translateX(-50%);
-		border: 5px solid transparent;
-		border-top-color: var(--bg);
-	  }
-
-	  .dialog::before {
-		content: '';
-		position: absolute;
-		top: 100%;
-		left: 50%;
-		transform: translateX(-50%);
-		border: 7px solid transparent;
-		border-top-color: var(--fg);
-		z-index: -1;
-	  }
-
-	  .dialog.visible {
-		opacity: 1;
-		transform: translate(-50%, -0.25rem);
-		visibility: visible;
-		transition: opacity 0.2s ease, transform 0.2s ease, visibility 0s linear 0s;
-	  }
-
-	  :global(.char) {
-		opacity: 0;
-		display: inline-block;
-		transform: translateY(0.4em);
-		transition: opacity 0.15s ease, transform 0.15s ease;
-	  }
-
-	  :global(.char.shown) {
-		opacity: 1;
-		transform: translateY(0);
-	  }
-
-      /* Pixel cat — built with divs */
-      .cat-container {
-		position: relative;
-        display: flex;
-        justify-content: center;
-        margin-bottom: 0rem;
-      }
-
-      .cat {
-		background: none;
-		border: none;
-		padding: 0;
-		cursor: pointer;
-        position: relative;
-        width: calc(var(--pixel) * 12);
-        height: calc(var(--pixel) * 14);
-        animation: float 3s ease-in-out infinite;
-		transition: transform 0.1s ease;
-      }
-
-	  .cat:hover {
-		transform: scale(1.05);
-	  }
-
-	  .cat:active {
-		transform: scale(0.95);
-	  }
-
-      /* Ears (triangles made with borders) */
-      .ear {
-        position: absolute;
-        top: 0;
-        width: 0;
-        height: 0;
-        border-left: calc(var(--pixel) * 1.5) solid transparent;
-        border-right: calc(var(--pixel) * 1.5) solid transparent;
-        border-bottom: calc(var(--pixel) * 2) solid var(--fg);
-      }
-      .ear-left { left: calc(var(--pixel) * 1); }
-      .ear-right { right: calc(var(--pixel) * 1); }
-
-      /* Head */
-      .head {
-        position: absolute;
-        top: calc(var(--pixel) * 1.5);
-        left: 0;
-        width: 100%;
-        height: calc(var(--pixel) * 6);
-        background: var(--fg);
-        border-radius: 4px;
-      }
-
-      /* Eyes */
-      .eye {
-        position: absolute;
-        top: calc(var(--pixel) * 2);
-        width: var(--pixel);
-        height: var(--pixel);
-        background: var(--bg);
-        animation: blink-eyes 4s infinite;
-      }
-      .eye-left { left: calc(var(--pixel) * 2.5); }
-      .eye-right { right: calc(var(--pixel) * 2.5); }
-
-      /* Nose */
-      .nose {
-        position: absolute;
-        top: calc(var(--pixel) * 3.5);
-        left: 50%;
-        transform: translateX(-50%);
-        width: var(--pixel);
-        height: calc(var(--pixel) * 0.5);
-        background: var(--bg);
-      }
-
-      /* Mouth */
-      .mouth {
-        position: absolute;
-        top: calc(var(--pixel) * 4.5);
-        left: 50%;
-        transform: translateX(-50%);
-        width: calc(var(--pixel) * 1.5);
-        height: calc(var(--pixel) * 0.5);
-        background: var(--bg);
-      }
-
-      /* Body */
-      .body {
-        position: absolute;
-        top: calc(var(--pixel) * 7);
-        left: calc(var(--pixel) * 2.5);
-        width: calc(var(--pixel) * 7);
-        height: calc(var(--pixel) * 6);
-        background: var(--fg);
-        border-radius: 4px;
-      }
-
-      footer {
-        position: fixed;
-        bottom: 1.5rem;
-        left: 0;
-        right: 0;
-        text-align: center;
+        letter-spacing: 0.3em;
         font-size: 0.75rem;
-        color: var(--dim);
-        letter-spacing: 0.2em;
       }
-
-      /* Animations */
-      @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
-      }
-
-      @keyframes blink {
-        50% { opacity: 0; }
-      }
-
-      @keyframes float {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-8px); }
-      }
-
-      @keyframes blink-eyes {
-        0%, 45%, 50%, 100% { height: var(--pixel); transform: translateY(0); }
-        47% { height: calc(var(--pixel) * 0.2); transform: translateY(calc(var(--pixel) / 2)); }
-      }
-
-      /* Responsive — make cat a bit smaller on mobile */
-      @media (max-width: 600px) {
-        :root {
-          --pixel: 5px;
-        }
-        .tagline {
-          letter-spacing: 0.3em;
-          font-size: 0.75rem;
-        }
-      }
-    </style>
-	</body>
+    }
+  </style>
+</body>
 </html>
