@@ -3,43 +3,92 @@
 ---
 
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="generator" content={Astro.generator} />
-    <meta name="description" content="ne.ko — coming soon" />
-    <title>ne.ko</title>
-  </head>
-  <body>
-    <div class="scanlines"></div>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<meta name="description" content="ne.ko - coming soon" />
+		<title>ne.ko</title>
+	</head>
 
-    <main>
-      <div class="cat-container">
-        <div class="cat">
-          <!-- Ears -->
-          <div class="ear ear-left"></div>
-          <div class="ear ear-right"></div>
-          <!-- Head -->
-          <div class="head">
-            <div class="eye eye-left"></div>
-            <div class="eye eye-right"></div>
-            <div class="nose"></div>
-            <div class="mouth"></div>
-          </div>
-          <!-- Body -->
-          <div class="body"></div>
-          <!-- Tail -->
-          <div class="tail"></div>
-        </div>
-      </div>
-    </main>
+	<script>
+		const cat = document.getElementById('cat') as HTMLButtonElement;
+		const dialog = document.getElementById('dialog') as HTMLDivElement;
 
-    <footer>
-      <a href="mailto:contact@ne-ko.io" class="email-link">contact@ne-ko.io</a>
-	  <span class="divider">·</span>
-	  <span>© 2026 uhvanni</span>
-    </footer>
+		const messages: string[] = [
+			'mrrrp..',
+			'meow!',
+			'erm.. meow. or something.'
+		]
+
+		let hideTimeout: ReturnType<typeof setTimeout>;
+		let typeInterval: ReturnType<typeof setInterval>;
+
+		let lastMessage = '';
+
+		cat.addEventListener('click', () => {
+			let msg;
+			do {
+				msg = messages[Math.floor(Math.random() * messages.length)]
+			} while (msg === lastMessage && messages.length > 1);
+			lastMessage = msg;
+
+			clearInterval(typeInterval);
+			clearTimeout(hideTimeout);
+
+			dialog.innerHTML = msg
+				.split('')
+				.map((ch) => `<span class="char">${ch === ' ' ? '&nbsp;' : ch}</span>`)
+				.join('');
+
+			dialog.classList.add('visible');
+
+			const chars = dialog.querySelectorAll<HTMLSpanElement>('.char');
+			
+			let i = 0;
+			typeInterval = setInterval(() => {
+				if (i < chars.length) {
+					chars[i].classList.add('shown');
+					i++;
+				} else {
+					clearInterval(typeInterval);
+					hideTimeout = setTimeout(() => dialog.classList.remove('visible'), 2000);
+				}
+			}, 25);
+		})
+	</script>
+
+	<body>
+	<div class="scanlines"></div>
+
+	<main>
+		<div class="cat-container">
+			<div class="dialog" id="dialog"></div>
+			<button class="cat" id="cat" aria-label="pet the cat">
+				<!-- Ears -->
+				<div class="ear ear-left"></div>
+				<div class="ear ear-right"></div>
+				<!-- Head -->
+				<div class="head">
+					<div class="eye eye-left"></div>
+					<div class="eye eye-right"></div>
+					<div class="nose"></div>
+					<div class="mouth"></div>
+				</div>
+				<!-- Body -->
+				<div class="body"></div>
+				<!-- Tail -->
+				<div class="tail"></div>
+			</button>
+		</div>
+	</main>
+
+	<footer>
+		<a href="mailto:contact@ne-ko.io" class="email-link">contact@ne-ko.io</a>
+		<span class="divider">·</span>
+		<span>© 2026 uhvanni</span>
+	</footer>
 
     <style>
       :root {
@@ -59,7 +108,7 @@
         height: 100%;
         background: var(--bg);
         color: var(--fg);
-        font-family: 'Comic Sans MS', 'Comic Sans', cursive;
+        font-family: 'Comic Sans MS', 'Comic Sans', sans-serif;
         overflow: hidden;
         image-rendering: auto;
       }
@@ -98,9 +147,9 @@
         background: repeating-linear-gradient(
           0deg,
           rgba(255, 255, 255, 0.02) 0px,
-          rgba(255, 255, 255, 0.02) 1px,
+          rgba(255, 255, 255, 0.02) 2px,
           transparent 1px,
-          transparent 3px
+          transparent 5px
         );
         pointer-events: none;
         z-index: 100;
@@ -108,7 +157,7 @@
 
       main {
         text-align: center;
-        animation: fadeIn 1.5s ease-out;
+        animation: fadeIn 0.5s ease-out;
       }
 
       .logo {
@@ -128,23 +177,91 @@
         margin-top: 2rem;
       }
 
-      .cursor {
-        animation: blink 1s step-end infinite;
-      }
+	  .dialog {
+		position: absolute;
+		bottom: calc(100% + 1rem);
+		left: 50%;
+		transform: translateX(-50%);
+		background: var(--bg);
+		color: var(--fg);
+		border: 1px solid var(--fg);
+		padding: 0.5rem 0.75rem;
+		font-size: 0.9rem;
+		white-space: nowrap;
+		opacity: 0;
+		visibility: hidden;
+		pointer-events: none;
+		transition: opacity 0.2s ease, transform 0.2s ease, visibility 0s linear 0.2s;
+		font-family: 'Comic Sans MS', sans-serif;
+	  }
+
+	  .dialog::after {
+		content: '';
+		position: absolute;
+		top: 100%;
+		left: 50%;
+		transform: translateX(-50%);
+		border: 5px solid transparent;
+		border-top-color: var(--bg);
+	  }
+
+	  .dialog::before {
+		content: '';
+		position: absolute;
+		top: 100%;
+		left: 50%;
+		transform: translateX(-50%);
+		border: 7px solid transparent;
+		border-top-color: var(--fg);
+		z-index: -1;
+	  }
+
+	  .dialog.visible {
+		opacity: 1;
+		transform: translate(-50%, -0.25rem);
+		visibility: visible;
+		transition: opacity 0.2s ease, transform 0.2s ease, visibility 0s linear 0s;
+	  }
+
+	  :global(.char) {
+		opacity: 0;
+		display: inline-block;
+		transform: translateY(0.4em);
+		transition: opacity 0.15s ease, transform 0.15s ease;
+	  }
+
+	  :global(.char.shown) {
+		opacity: 1;
+		transform: translateY(0);
+	  }
 
       /* Pixel cat — built with divs */
       .cat-container {
+		position: relative;
         display: flex;
         justify-content: center;
         margin-bottom: 0rem;
       }
 
       .cat {
+		background: none;
+		border: none;
+		padding: 0;
+		cursor: pointer;
         position: relative;
         width: calc(var(--pixel) * 12);
         height: calc(var(--pixel) * 14);
         animation: float 3s ease-in-out infinite;
+		transition: transform 0.1s ease;
       }
+
+	  .cat:hover {
+		transform: scale(1.05);
+	  }
+
+	  .cat:active {
+		transform: scale(0.95);
+	  }
 
       /* Ears (triangles made with borders) */
       .ear {
@@ -208,23 +325,11 @@
       .body {
         position: absolute;
         top: calc(var(--pixel) * 7);
-        left: calc(var(--pixel) * 1);
-        width: calc(var(--pixel) * 10);
+        left: calc(var(--pixel) * 2.5);
+        width: calc(var(--pixel) * 7);
         height: calc(var(--pixel) * 6);
         background: var(--fg);
         border-radius: 4px;
-      }
-
-      /* Tail */
-      .tail {
-        position: absolute;
-        top: calc(var(--pixel) * 10);
-        right: calc(var(--pixel) * -2);
-        width: calc(var(--pixel) * 3);
-        height: calc(var(--pixel) * 1);
-        background: var(--fg);
-        transform-origin: left center;
-        animation: tail-wag 2s ease-in-out infinite;
       }
 
       footer {
@@ -254,13 +359,8 @@
       }
 
       @keyframes blink-eyes {
-        0%, 45%, 50%, 100% { height: var(--pixel); }
-        47% { height: calc(var(--pixel) * 0.2); }
-      }
-
-      @keyframes tail-wag {
-        0%, 100% { transform: rotate(0deg); }
-        50% { transform: rotate(-20deg); }
+        0%, 45%, 50%, 100% { height: var(--pixel); transform: translateY(0); }
+        47% { height: calc(var(--pixel) * 0.2); transform: translateY(calc(var(--pixel) / 2)); }
       }
 
       /* Responsive — make cat a bit smaller on mobile */
@@ -274,5 +374,5 @@
         }
       }
     </style>
-  </body>
+	</body>
 </html>
