@@ -1,0 +1,29 @@
+---
+// src/components/WavyText.astro
+interface Props {
+  text: string;
+  delay?: number;
+}
+const { text, delay = 0.08 } = Astro.props;
+const letters = [...text];
+---
+<span class="wavy">
+  {letters.map((char, i) => (
+    <span style={`animation-delay: ${i * delay}s`}>
+      {char === ' ' ? '\u00A0' : char}
+    </span>
+  ))}
+</span>
+
+<style>
+  .wavy > span {
+    padding-top: 2rem;
+    display: inline-block;
+    animation: wiggle 1.2s ease-in-out infinite;
+  }
+  @keyframes wiggle {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(-8deg); }
+    75% { transform: rotate(8deg); }
+  }
+</style>

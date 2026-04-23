@@ -1,141 +1,45 @@
 ---
 // src/pages/index.astro
-import Cat from '../components/cat.astro'
+import '../styles/global.css'
+
+import WavyText from '../components/WavyText.astro'
+import WiggleText from '../components/WiggleText.astro'
 ---
 
 <html lang="en">
-<head>
+  <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="icon" type="image/svg+xml" href="https://avatar-cyan.vercel.app/api/pfp/658119375920037897/smallimage" />
-  <meta name="generator" content={Astro.generator} />
-  <meta name="description" content="ne.ko - coming soon" />
-  <title>ne.ko</title>
-</head>
-
-<body>
-  <div class="scanlines"></div>
+  </head>
 
   <main>
-    <Cat />
+    <header />
   </main>
 
-  <footer>
-    <a href="mailto:contact@ne-ko.io" class="email-link">contact@ne-ko.io</a>
-    <span class="divider">·</span>
-    <span>© 2026 uhvanni</span>
-  </footer>
-
-  <style>
-    :root {
-      --bg: #0a0a0a;
-      --fg: #f5f5f5;
-      --dim: #888;
-      --pixel: 6px;
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    html, body {
-      height: 100%;
-      background: var(--bg);
-      color: var(--fg);
-      font-family: 'Courier New', Courier, monospace;
-      overflow: hidden;
-      image-rendering: auto;
-    }
-
-    body {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      position: relative;
-      padding-bottom: 6rem;
-    }
-
-    .email-link {
-      color: var(--fg);
-      text-decoration: none;
-      border-bottom: 1px solid var(--dim);
-      padding-bottom: 2px;
-      transition: all 0.2s ease;
-    }
-
-    .email-link:hover {
-      color: var(--fg);
-      border-bottom-color: var(--fg);
-    }
-
-    .divider {
-      margin: 0 0.75rem;
-      color: var(--dim);`
-    }
-
-    /* Subtle scanline effect */
-    .scanlines {
-      position: fixed;
-      inset: 0;
-      background: repeating-linear-gradient(
-        0deg,
-        rgba(255, 255, 255, 0.02) 0px,
-        rgba(255, 255, 255, 0.02) 2px,
-        transparent 1px,
-        transparent 5px
-      );
-      pointer-events: none;
-      z-index: 100;
-    }
-
-    main {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      animation: fadeIn 0.5s ease-out;
-    }
-
-    footer {
-      padding: 1.5rem;
-      text-align: center;
-      font-size: 0.75rem;
-      color: var(--dim);
-      letter-spacing: 0.1em;
-    }
-
-    .tagline {
-      font-size: 1rem;
-      letter-spacing: 0.2em;
-      color: var(--dim);
-      margin-top: 2rem;
-    }
-
-    /* Animations */
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes blink {
-      50% { opacity: 0; }
-    }
-
-    /* Responsive — make cat a bit smaller on mobile */
-    @media (max-width: 600px) {
-      :root {
-        --pixel: 5px;
-      }
-      .tagline {
-        letter-spacing: 0.3em;
-        font-size: 0.75rem;
-      }
-    }
-  </style>
-</body>
+  <body>
+    <h1><WavyText text="FUCKING AWESOME WEBSITE (NE.KO)!!!!!" /></h1>
+    <img src="https://blob.gifcities.org/gifcities/ZT2JBJTQ2HBNDLF2H5TX5KUHW7DTRRLW.gif" alt="cat"/>
+    <p>
+      ma name is vanni<br>
+      also known as uhvanni<br>
+      mainly a programmer<br>
+      october 13th ma birfday<br><br>
+      email me here: <a href="mailto:contact@ne-ko.io">contact@ne-ko.io</a>
+    </p>
+    <h1><WavyText text="things I've worked on or are currently working on" /></h1>
+    <img src="https://blob.gifcities.org/gifcities/3RCSKL2ZY3EXK5ZUOFSVHWMZOI6LIQ3C.gif" alt="cat"/>
+    <p>
+      * = not working on it anymore<br><br>
+      fisch: <a href="https://www.roblox.com/games/16732694052/" target="_blank" rel="noopener noreferrer">https://www.roblox.com/games/16732694052/</a><br>
+      a few minutes with hubert: <a href="https://www.roblox.com/games/119606218608033/" target="_blank" rel="noopener noreferrer">https://www.roblox.com/games/119606218608033/</a> *<br>
+      staying together: <a href="https://www.roblox.com/games/12146876781/" target="_blank" rel="noopener noreferrer">https://www.roblox.com/games/12146876781/</a> *<br>
+    </p>
+    <h1><WavyText text="things I like" /></h1>
+    <img src="https://blob.gifcities.org/gifcities/HKJZAGKZA4IMQU4GOKT753OHYKMSDBQB.gif" alt="cat"/>
+    <p>
+      I like to program in luau (roblox programming language)<br>
+      I like to design UI<br>
+      I like chicken<br>
+      I like cats
+    </p>
+  </body>
 </html>
