@@ -19,11 +19,21 @@ const letters = [...text];
   .wavy > span {
     padding-top: 2rem;
     display: inline-block;
-    animation: wiggle 1.2s ease-in-out infinite;
+    color: #ff0000;
+    animation: wiggle 1.2s ease-in-out infinite, rainbow 3s linear infinite;
   }
   @keyframes wiggle {
     0%, 100% { transform: rotate(0deg); }
     25% { transform: rotate(-8deg); }
     75% { transform: rotate(8deg); }
+  }
+  @keyframes rainbow {
+    0% { color: #ff0000; }
+    17% { color: #ff9900; }
+    33% { color: #ffff00; }
+    50% { color: #00cc00; }
+    67% { color: #0066ff; }
+    83% { color: #9900ff };
+    100% { color: #ff0000; }
   }
 </style>
